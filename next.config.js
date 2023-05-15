@@ -3,7 +3,7 @@ const { NextFederationPlugin } = require("@module-federation/nextjs-mf");
 const remotes = (isServer) => {
   const location = isServer ? "ssr" : "chunks";
   return {
-    next1: `next1@http://localhost:3000/_next/static/${location}/remoteEntry.js`,
+    worklist: `worklist@http://localhost:3000/_next/static/${location}/remoteEntry.js`,
   };
 };
 const nextConfig = {

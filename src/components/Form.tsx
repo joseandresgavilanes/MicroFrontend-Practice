@@ -59,8 +59,6 @@ const styles = {
 export default function Form({
   header = "default",
   sendFormMF = false,
-  childState,
-  setParentState,
 }) {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -113,7 +111,6 @@ export default function Form({
   return (
     <form onSubmit={onSubmit} style={styles.formContainer}>
       <div>
-        <h1>{childState}</h1>
         <h2 style={styles.heading}>{header}</h2>
         <p style={styles.subheading}>CAMBIANDO INFORMACION</p>
       </div>
@@ -183,24 +180,7 @@ export default function Form({
             </div>
           </div>
 
-          <div>
-            <label htmlFor="email" style={styles.label}>
-              Test Father MF
-            </label>
-            <div>
-              <input
-                id="test"
-                name="text"
-                type="text"
-                autoComplete="text"
-                value={childState}
-                onChange={(e) => setParentState(e.target.value)}
-                style={styles.input}
-              />
-
-              {emailError && <p style={styles.error}>{emailError}</p>}
-            </div>
-          </div>
+          
         </div>
       </div>
 
