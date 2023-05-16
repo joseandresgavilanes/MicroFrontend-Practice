@@ -37,6 +37,9 @@ const nextConfig = {
         remotes: remotes(options.isServer),
         exposes: {
           "./form": "./src/components/Form.tsx",
+          "./selectQuantity": "./src/components/SelectQuantity.tsx",
+          "./selectCategory": "./src/components/SelectCategory.tsx",
+          "./askProducts": "./src/components/AskProduct.tsx",
         },
         extraOptions: {
           exposePages: true,
