@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { RemoteTaskProps } from '@ka-react/micro-frontend';
 
 
 const styles = {
@@ -57,12 +58,30 @@ const styles = {
     },
   };
 
-const AskProduct = () => {
+const AskProduct = (props: RemoteTaskProps) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
+
+  const onBeforeFinishingHandler = () => {
+    console.log('Validate form');
+    console.log('Guarda la informacion')
+    props.emitter.publish('finish', {
+      metadata: { haveProducts: isChecked }
+    });
+  }
+
+  useEffect(() => {
+    if (props.emitter) {
+      props?.emitter?.subscribe('before-finishing', onBeforeFinishingHandler);
+    }
+    return () => {
+        props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
+    }
+  }, [props.emitter]);
+
 
   return (
     <div style={styles.formContainer}>

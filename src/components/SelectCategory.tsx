@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import { RemoteTaskProps } from '@ka-react/micro-frontend';
+import React, { useEffect, useState } from 'react'
 
 
 const styles = {
@@ -58,12 +59,30 @@ const styles = {
   };
 
 
-const SelectCategory = () => {
-    const [selectedQuantity, setSelectedQuantity] = useState('');
+const SelectCategory = (props: RemoteTaskProps) => {
+    const [selectedCategory, setSelectedCategory] = useState('');
 
-  const handleQuantityChange = (event) => {
-    setSelectedQuantity(event.target.value);
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
+
+  const onBeforeFinishingHandler = () => {
+    console.log('Validate form');
+    console.log('Guarda la informacion')
+    props.emitter.publish('finish', {
+      metadata: { category: selectedCategory }
+    });
+  }
+
+  useEffect(() => {
+    if (props.emitter) {
+      props?.emitter?.subscribe('before-finishing', onBeforeFinishingHandler);
+    }
+    return () => {
+        props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
+    }
+  }, [props.emitter]);
+
 
   return (
     <div style={styles.formContainer}>
@@ -72,8 +91,8 @@ const SelectCategory = () => {
       <label style={styles.label}>
         Categoria:
         <select
-          value={selectedQuantity}
-          onChange={handleQuantityChange}
+          value={selectedCategory}
+          onChange={handleCategoryChange}
           style={styles.input}
         >
           <option value="">Seleccione...</option>
@@ -82,9 +101,9 @@ const SelectCategory = () => {
           <option value="Medicamento">Medicamento</option>
         </select>
       </label>
-      {selectedQuantity && (
+      {selectedCategory && (
         <div style={styles.successMessage}>
-          Se ha seleccionado la categoria: {selectedQuantity}
+          Se ha seleccionado la categoria: {selectedCategory}
         </div>
       )}
     </div>

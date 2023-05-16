@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.17",
+    "@ka-react/micro-frontend": "^1.0.0",
     "@module-federation/nextjs-mf": "^6.4.0",
     "@types/node": "20.1.1",
     "@types/react": "18.2.6",
