@@ -58,48 +58,68 @@ const styles = {
     },
   };
 
-const AskProduct = (props: RemoteTaskProps) => {
-  const [isChecked, setIsChecked] = useState(false);
+  const AskProduct = (props: RemoteTaskProps) => {
+    const [haveProducts, setHaveProducts] = useState();
+  
+    const handleOptionChange = (value) => {
+      setHaveProducts(value === 'yes');
+    };
+    
+    const onBeforeFinishingHandler = () => {
+      console.log('Validate form');
+      console.log('Guarda la informacion');
+      props.emitter.publish('finish', {
+        metadata: [
+            {
+                key: "haveProducts",
+                value: haveProducts
+            }
+        ]
+      });
+    };
+  
+    useEffect(() => {
+      if (props.emitter) {
+        props?.emitter?.subscribe('before-finishing', onBeforeFinishingHandler);
+      }
+      console.log("Renderizado del mf")
+      console.log(props.emitter)
+      return () => {
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
-  const onBeforeFinishingHandler = () => {
-    console.log('Validate form');
-    console.log('Guarda la informacion')
-    props.emitter.publish('finish', {
-      metadata: { haveProducts: isChecked }
-    });
-  }
-
-  useEffect(() => {
-    if (props.emitter) {
-      props?.emitter?.subscribe('before-finishing', onBeforeFinishingHandler);
-    }
-    return () => {
+        console.log("testing")
         props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
-    }
-  }, [props.emitter]);
+      };
 
-
-  return (
-    <div style={styles.formContainer}>
-      <h2 style={styles.heading}>Formulario</h2>
-      <div style={styles.subheading}>Selecciona un producto:</div>
-      <label style={styles.label}>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-        />
-        Existen productos para entregar?
-      </label>
-      <div style={styles.successMessage}>
-        {isChecked && "Existen productos para entregar"}
+    }, []);
+  
+    return (
+      <div style={styles.formContainer}>
+        <div style={styles.subheading}>Selecciona si existen productos:</div>
+        <label style={styles.label}>
+          <input
+            type="radio"
+            name="haveProducts"
+            value="yes"
+            checked={haveProducts === true}
+            onChange={() => handleOptionChange('yes')}
+          />
+          Sí
+        </label>
+        <label style={styles.label}>
+          <input
+            type="radio"
+            name="haveProducts"
+            value="no"
+            checked={haveProducts === false}
+            onChange={() => handleOptionChange('no')}
+          />
+          No
+        </label>
+        <div style={styles.successMessage}>
+          {haveProducts && "Existen productos para entregar"}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default AskProduct;

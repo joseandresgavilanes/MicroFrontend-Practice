@@ -70,7 +70,12 @@ const SelectCategory = (props: RemoteTaskProps) => {
     console.log('Validate form');
     console.log('Guarda la informacion')
     props.emitter.publish('finish', {
-      metadata: { category: selectedCategory }
+        metadata: [
+            {
+              key: "category",
+              value: selectedCategory,
+            },
+          ],
     });
   }
 
@@ -86,8 +91,7 @@ const SelectCategory = (props: RemoteTaskProps) => {
 
   return (
     <div style={styles.formContainer}>
-      <h2 style={styles.heading}>Formulario</h2>
-      <div style={styles.subheading}>Seleccione la categoria:</div>
+      <h2 style={styles.heading}>Seleccione la categoria:</h2>
       <label style={styles.label}>
         Categoria:
         <select
