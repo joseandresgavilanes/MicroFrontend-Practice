@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { RemoteTaskProps } from '@ka-react/micro-frontend';
+import React, { useEffect, useState, ChangeEvent } from 'react';
+import { RemoteTaskProps } from '@/utils/remote-task-mf';
 
 
 const styles = {
@@ -59,34 +59,29 @@ const styles = {
   };
 
   const AskProduct = (props: RemoteTaskProps) => {
-    const [haveProducts, setHaveProducts] = useState();
+    const [haveProducts, setHaveProducts] = useState<boolean>(false);
   
-    const handleOptionChange = (value) => {
-      setHaveProducts(value === 'yes');
+    const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setHaveProducts(event.target.value === 'yes');
     };
     
-    const onBeforeFinishingHandler = () => {
-      console.log('Validate form');
-      console.log('Guarda la informacion');
-      props.emitter.publish('finish', {
-        metadata: [
+    const onBeforeFinishingHandler = ({ comment } :any) => {
+      props.onFinish({
+        metadataList: [
             {
                 key: "haveProducts",
                 value: haveProducts
             }
-        ]
+        ],
+        comment
       });
     };
   
     useEffect(() => {
       if (props.emitter) {
-        props?.emitter?.subscribe('before-finishing', onBeforeFinishingHandler);
+        props.emitter.subscribe('before-finishing', onBeforeFinishingHandler);
       }
-      console.log("Renderizado del mf")
-      console.log(props.emitter)
       return () => {
-
-        console.log("testing")
         props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
       };
 
@@ -101,7 +96,7 @@ const styles = {
             name="haveProducts"
             value="yes"
             checked={haveProducts === true}
-            onChange={() => handleOptionChange('yes')}
+            onChange={handleOptionChange}
           />
           Sí
         </label>
@@ -111,7 +106,7 @@ const styles = {
             name="haveProducts"
             value="no"
             checked={haveProducts === false}
-            onChange={() => handleOptionChange('no')}
+            onChange={handleOptionChange}
           />
           No
         </label>

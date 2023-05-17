@@ -1,5 +1,5 @@
-import { RemoteTaskProps } from '@ka-react/micro-frontend';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ChangeEvent } from 'react'
+import { RemoteTaskProps } from '@/utils/remote-task-mf';
 
 
 const styles = {
@@ -62,31 +62,31 @@ const styles = {
 const SelectCategory = (props: RemoteTaskProps) => {
     const [selectedCategory, setSelectedCategory] = useState('');
 
-  const handleCategoryChange = (event) => {
+  const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedCategory(event.target.value);
   };
 
-  const onBeforeFinishingHandler = () => {
-    console.log('Validate form');
-    console.log('Guarda la informacion')
-    props.emitter.publish('finish', {
-        metadata: [
-            {
-              key: "category",
-              value: selectedCategory,
-            },
-          ],
+  const onBeforeFinishingHandler = ({ comment } :any) => {
+    props.onFinish({
+      metadataList: [
+          {
+            key: "category",
+            value: selectedCategory,
+          }
+      ],
+      comment
     });
-  }
+  };
 
   useEffect(() => {
     if (props.emitter) {
-      props?.emitter?.subscribe('before-finishing', onBeforeFinishingHandler);
+      props.emitter.subscribe('before-finishing', onBeforeFinishingHandler);
     }
     return () => {
-        props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
-    }
-  }, [props.emitter]);
+      props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
+    };
+
+  }, []);
 
 
   return (
