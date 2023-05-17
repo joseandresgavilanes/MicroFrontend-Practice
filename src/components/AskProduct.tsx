@@ -59,7 +59,7 @@ const styles = {
   };
 
   const AskProduct = (props: RemoteTaskProps) => {
-    const [haveProducts, setHaveProducts] = useState<boolean>(true);
+    const [haveProducts, setHaveProducts] = useState<boolean | undefined>(undefined);
   
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
       setHaveProducts(event.target.value === 'yes');
@@ -85,7 +85,7 @@ const styles = {
         props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
       };
 
-    }, []);
+    }, [props.emitter, haveProducts]);
   
     return (
       <div style={styles.formContainer}>

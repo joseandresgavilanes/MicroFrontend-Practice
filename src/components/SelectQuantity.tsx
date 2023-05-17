@@ -58,57 +58,60 @@ const styles = {
 };
 
 const SelectQuantity = (props: RemoteTaskProps) => {
-  const [selectedQuantity, setSelectedQuantity] = useState("");
-
-  const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedQuantity(event.target.value);
-  };
-
-  const onBeforeFinishingHandler = ({ comment } :any) => {
-    props.onFinish({
-      metadataList: [
-          {
-            key: "numProducts",
-            value: selectedQuantity,
-          }
-      ],
-      comment
-    });
-  };
-
-  useEffect(() => {
-    if (props.emitter) {
-      props.emitter.subscribe('before-finishing', onBeforeFinishingHandler);
-    }
-    return () => {
-      props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
+    const [selectedQuantity, setSelectedQuantity] = useState("");
+  
+    const handleQuantityChange = (event: ChangeEvent<HTMLSelectElement>) => {
+      setSelectedQuantity(event.target.value);
     };
-
-  }, []);
-
-  return (
-    <div style={styles.formContainer}>
-      <h2 style={styles.heading}>Seleccione la cantidad:</h2>
-      <label style={styles.label}>
-        Cantidad:
-        <select
-          value={selectedQuantity}
-          onChange={handleQuantityChange}
-          style={styles.input}
-        >
-          <option value="">Seleccione...</option>
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-        </select>
-      </label>
-      {selectedQuantity && (
-        <div style={styles.successMessage}>
-          Se ha seleccionado la cantidad: {selectedQuantity}
-        </div>
-      )}
-    </div>
-  );
-};
+  
+    const onBeforeFinishingHandler = ({ comment }: any) => {
+      if (selectedQuantity !== "") {
+        props.onFinish({
+          metadataList: [
+            {
+              key: "numProducts",
+              value: selectedQuantity,
+            },
+          ],
+          comment,
+        });
+      }
+    };
+  
+    useEffect(() => {
+      if (props.emitter) {
+        console.log("suscribe")
+        props.emitter?.subscribe("before-finishing", onBeforeFinishingHandler);
+      }
+      return () => {
+        console.log("desuscribirse")
+        props.emitter?.unsubscribe("before-finishing", onBeforeFinishingHandler);
+      };
+    }, [props.emitter, selectedQuantity]);
+  
+    return (
+      <div style={styles.formContainer}>
+        <h2 style={styles.heading}>Seleccione la cantidad:</h2>
+        <label style={styles.label}>
+          Cantidad:
+          <select
+            value={selectedQuantity}
+            onChange={handleQuantityChange}
+            style={styles.input}
+          >
+            <option value="">Seleccione...</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+          </select>
+        </label>
+        {selectedQuantity && (
+          <div style={styles.successMessage}>
+            Se ha seleccionado la cantidad: {selectedQuantity}
+          </div>
+        )}
+      </div>
+    );
+  };
 
 export default SelectQuantity;
