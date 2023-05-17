@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { RemoteTaskProps } from "@ka-react/micro-frontend";
+import React, { useEffect, useState, ChangeEvent } from "react";
+import { RemoteTaskProps } from '@/utils/remote-task-mf';
 
 const styles = {
   formContainer: {
@@ -60,31 +60,31 @@ const styles = {
 const SelectQuantity = (props: RemoteTaskProps) => {
   const [selectedQuantity, setSelectedQuantity] = useState("");
 
-  const handleQuantityChange = (event) => {
+  const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedQuantity(event.target.value);
   };
 
-  const onBeforeFinishingHandler = () => {
-    console.log("Validate form");
-    console.log("Guarda la informacion");
-    props.emitter.publish("finish", {
-      metadata: [
-        {
-          key: "numProducts",
-          value: selectedQuantity,
-        },
+  const onBeforeFinishingHandler = ({ comment } :any) => {
+    props.onFinish({
+      metadataList: [
+          {
+            key: "numProducts",
+            value: selectedQuantity,
+          }
       ],
+      comment
     });
   };
 
   useEffect(() => {
     if (props.emitter) {
-      props?.emitter?.subscribe("before-finishing", onBeforeFinishingHandler);
+      props.emitter.subscribe('before-finishing', onBeforeFinishingHandler);
     }
     return () => {
-      props?.emitter?.unsubscribe("before-finishing", onBeforeFinishingHandler);
+      props?.emitter?.unsubscribe('before-finishing', onBeforeFinishingHandler);
     };
-  }, [props.emitter]);
+
+  }, []);
 
   return (
     <div style={styles.formContainer}>
@@ -98,8 +98,8 @@ const SelectQuantity = (props: RemoteTaskProps) => {
         >
           <option value="">Seleccione...</option>
           <option value="10">10</option>
+          <option value="20">20</option>
           <option value="30">30</option>
-          <option value="50">50</option>
         </select>
       </label>
       {selectedQuantity && (
