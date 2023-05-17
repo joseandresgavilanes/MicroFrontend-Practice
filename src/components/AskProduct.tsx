@@ -59,7 +59,7 @@ const styles = {
   };
 
   const AskProduct = (props: RemoteTaskProps) => {
-    const [haveProducts, setHaveProducts] = useState<boolean>(false);
+    const [haveProducts, setHaveProducts] = useState<boolean>(true);
   
     const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
       setHaveProducts(event.target.value === 'yes');
