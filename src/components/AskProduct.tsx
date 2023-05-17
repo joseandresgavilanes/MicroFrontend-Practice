@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
-import { RemoteTaskProps } from '@/utils/remote-task-mf';
+import { RemoteTaskProps } from '@ka-react/micro-frontend';
 
 
 const styles = {
