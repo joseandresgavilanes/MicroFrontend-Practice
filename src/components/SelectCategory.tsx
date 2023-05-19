@@ -96,9 +96,9 @@ const SelectCategory = (props: RemoteTaskProps) => {
           style={styles.input}
         >
           <option value="">Seleccione...</option>
-          <option value="Tecnologia">Tecnologia</option>
-          <option value="Vestimenta">Vestimenta</option>
-          <option value="Medicamento">Medicamento</option>
+          <option value="tecnologia">tecnologia</option>
+          <option value="vestimenta">vestimenta</option>
+          <option value="medicamento">medicamento</option>
         </select>
       </label>
       {selectedCategory && (
