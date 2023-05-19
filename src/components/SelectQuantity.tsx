@@ -70,7 +70,7 @@ const SelectQuantity = (props: RemoteTaskProps) => {
           metadataList: [
             {
               key: "numProducts",
-              value: selectedQuantity,
+              value: Number(selectedQuantity),
             },
           ],
           comment,
