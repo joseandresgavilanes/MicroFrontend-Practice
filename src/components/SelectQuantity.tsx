@@ -95,6 +95,7 @@ const SelectQuantity = (props: RemoteTaskProps) => {
         <label style={styles.label}>
           Cantidad:
           <select
+            required
             value={selectedQuantity}
             onChange={handleQuantityChange}
             style={styles.input}
