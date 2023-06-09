@@ -89,7 +89,7 @@ const styles = {
   
     return (
       <div style={styles.formContainer}>
-        <div style={styles.subheading}>Selecciona si existen productos:</div>
+        <div style={styles.subheading}>Selecciona si existen productos: *</div>
         <label style={styles.label}>
           <input
             type="radio"
