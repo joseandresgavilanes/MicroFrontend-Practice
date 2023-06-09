@@ -1,5 +1,7 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent, useRef } from "react";
 import { RemoteTaskProps } from "@ka-react/micro-frontend";
+import { notificationOptions } from "@/utils";
+import { Toast } from 'primereact/toast';
 
 const styles = {
   formContainer: {
@@ -59,12 +61,23 @@ const styles = {
 
 const SelectCategory = (props: RemoteTaskProps) => {
   const [selectedCategory, setSelectedCategory] = useState("");
+  const toast = useRef(null);
 
-  const handleCategoryChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(event.target.value);
   };
 
   const onBeforeFinishingHandler = ({ comment }: any) => {
+    if (selectedCategory === "") {
+      notificationOptions(
+        "error",
+        "Finalización de tarea",
+        "Debe seleccionar una categoria",
+        3000,
+        toast
+      );
+      return;
+    }
     props.onFinish({
       metadataList: [
         {
@@ -87,25 +100,28 @@ const SelectCategory = (props: RemoteTaskProps) => {
 
   return (
     <div style={styles.formContainer}>
+      <Toast ref={toast} />
       <h2 style={styles.heading}>Seleccione la categoria:</h2>
       <label style={styles.label}>
         Categoria: *
         <select
           required
           value={selectedCategory}
-          onChange={handleCategoryChange}
+          onChange={(e) => handleCategoryChange(e)}
           style={styles.input}
         >
           <option value="">Seleccione...</option>
-          <option value="tecnología">Tecnología</option>
-          <option value="vestimenta">vestimenta</option>
-          <option value="medicamento">medicamento</option>
+          <option value="tecnologia">Tecnología</option>
+          <option value="vestimenta">Vestimenta</option>
+          <option value="medicamento">Medicamento</option>
         </select>
       </label>
-      {selectedCategory && (
+      {selectedCategory !== "" ? (
         <div style={styles.successMessage}>
           Se ha seleccionado la categoria: {selectedCategory}
         </div>
+      ) : (
+        <div style={styles.error}>Debe seleccionar una categoria</div>
       )}
     </div>
   );
