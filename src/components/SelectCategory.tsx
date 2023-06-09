@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ChangeEvent, useRef } from "react";
 import { RemoteTaskProps } from "@ka-react/micro-frontend";
 import { notificationOptions } from "@/utils";
-import { Toast } from 'primereact/toast';
+import { Toast } from "primereact/toast";
 
 const styles = {
   formContainer: {
@@ -72,7 +72,7 @@ const SelectCategory = (props: RemoteTaskProps) => {
       notificationOptions(
         "error",
         "Finalización de tarea",
-        "Debe seleccionar una categoria",
+        "Debe seleccionar una categoría",
         3000,
         toast
       );
@@ -101,9 +101,9 @@ const SelectCategory = (props: RemoteTaskProps) => {
   return (
     <div style={styles.formContainer}>
       <Toast ref={toast} />
-      <h2 style={styles.heading}>Seleccione la categoria:</h2>
+      <h2 style={styles.heading}>Seleccione la categoría:</h2>
       <label style={styles.label}>
-        Categoria: *
+        Categoría: *
         <select
           required
           value={selectedCategory}
@@ -118,10 +118,10 @@ const SelectCategory = (props: RemoteTaskProps) => {
       </label>
       {selectedCategory !== "" ? (
         <div style={styles.successMessage}>
-          Se ha seleccionado la categoria: {selectedCategory}
+          Se ha seleccionado la categoría: {selectedCategory}
         </div>
       ) : (
-        <div style={styles.error}>Debe seleccionar una categoria</div>
+        <div style={styles.error}>Debe seleccionar una categoría</div>
       )}
     </div>
   );

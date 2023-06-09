@@ -70,7 +70,7 @@ const AskProduct = (props: RemoteTaskProps) => {
   };
 
   const onBeforeFinishingHandler = ({ comment }: any) => {
-    if (!haveProducts) {
+    if (haveProducts === undefined) {
       notificationOptions(
         "error",
         "Finalización de tarea",
@@ -124,17 +124,11 @@ const AskProduct = (props: RemoteTaskProps) => {
         />
         No
       </label>
-      <div style={styles.successMessage}>
-        {haveProducts ? (
-          <div style={styles.successMessage}>
-            Existen productos para entregar
-          </div>
-        ) : (
-          <div style={styles.error}>
-            Debe indicar si existen, o no, productos
-          </div>
-        )}
-      </div>
+      {haveProducts !== undefined && haveProducts ? (
+        <div style={styles.successMessage}>Existen productos para entregar</div>
+      ) : (
+        <div style={styles.error}>Debe indicar si existen, o no, productos</div>
+      )}
     </div>
   );
 };
