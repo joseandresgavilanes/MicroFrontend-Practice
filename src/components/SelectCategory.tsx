@@ -89,14 +89,15 @@ const SelectCategory = (props: RemoteTaskProps) => {
     <div style={styles.formContainer}>
       <h2 style={styles.heading}>Seleccione la categoria:</h2>
       <label style={styles.label}>
-        Categoria:
+        Categoria: *
         <select
+          required
           value={selectedCategory}
           onChange={handleCategoryChange}
           style={styles.input}
         >
           <option value="">Seleccione...</option>
-          <option value="tecnologia">tecnologia</option>
+          <option value="tecnología">Tecnología</option>
           <option value="vestimenta">vestimenta</option>
           <option value="medicamento">medicamento</option>
         </select>
