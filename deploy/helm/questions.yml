@@ -1,0 +1,15 @@
+categories:
+  - Frontend
+questions:
+  - variable: ingress.hosts.0.host
+    label: "Domain"
+    default: "kflow.krugercorp.com"
+    type: enum
+    options:
+      - "kflow.krugercorp.com"
+  - variable: ingress.tls.0.hosts.0
+    label: "TLS Domain"
+    type: enum
+    default: "kflow.krugercorp.com"
+    options:
+      - "kflow.krugercorp.com"

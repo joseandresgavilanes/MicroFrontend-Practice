@@ -1,38 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Worklist Web
 
-## Getting Started
-
-First, run the development server:
+## Run in development environment
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build image
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Build docker image
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```shell
+docker build --add-host nexusdev.krugercorp.com:192.168.5.17 --no-cache -t krugerarchitecturedocker.krugercorp.com/kw-legacy-web:1.0.0-SNAPSHOT -f deploy/docker/Dockerfile .
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+**OPTIONAL** - Run the container
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```shell
+docker run --add-host keycloak.krugercorp.com:192.168.5.17 -it --rm --env-file .env.development --name kw-legacy-web -p 3000:3000 krugerarchitecturedocker.krugercorp.com/kw-legacy-web:1.0.0-SNAPSHOT
+```
 
-## Learn More
+Push image
 
-To learn more about Next.js, take a look at the following resources:
+```shell
+docker push krugerarchitecturedocker.krugercorp.com/kw-legacy-web:1.0.0-SNAPSHOT
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Build Chart
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**OPTIONAL** Remove previous chart
 
-## Deploy on Vercel
+```shell
+rm kw-legacy-web-1.0.0.tgz
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1) Update dependencies
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```shell
+# Execute only if necessary update dependency
+helm dependency update ./deploy/helm
+```
+
+**OPTIONAL** Test if chart has correct configuration
+
+```shell
+helm uninstall kw-legacy-web -n sistemaintegralpgedev
+helm install kw-legacy-web ./deploy/helm -n sistemaintegralpgedev
+helm install kw-legacy-web --dry-run ./deploy/helm -n sistemaintegralpgedev
+```
+
+2) Build chart
+
+```shell
+helm package ./deploy/helm
+```
+
+3) Push chart
+
+```shell
+helm nexus-push kruger-architecture kw-legacy-web-1.0.0.tgz -u user -p Password01
+```
