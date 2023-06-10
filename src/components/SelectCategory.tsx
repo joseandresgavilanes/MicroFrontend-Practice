@@ -87,6 +87,13 @@ const SelectCategory = (props: RemoteTaskProps) => {
       ],
       comment,
     });
+    notificationOptions(
+      "successs",
+      "Finalización de tarea",
+      "Selección de categoria, realizada",
+      3000,
+      toast
+    );
   };
 
   useEffect(() => {

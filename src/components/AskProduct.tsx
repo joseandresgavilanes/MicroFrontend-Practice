@@ -89,6 +89,13 @@ const AskProduct = (props: RemoteTaskProps) => {
       ],
       comment,
     });
+    notificationOptions(
+      "successs",
+      "Finalización de tarea",
+      "Indicación de existencia de producto, realizada",
+      3000,
+      toast
+    );
   };
 
   useEffect(() => {
