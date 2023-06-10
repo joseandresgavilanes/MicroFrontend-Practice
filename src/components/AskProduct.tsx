@@ -124,7 +124,8 @@ const AskProduct = (props: RemoteTaskProps) => {
         />
         No
       </label>
-      {haveProducts !== undefined && haveProducts ? (
+      {haveProducts !== undefined &&
+      (haveProducts || haveProducts === false) ? (
         <div style={styles.successMessage}>Existen productos para entregar</div>
       ) : (
         <div style={styles.error}>Debe indicar si existen, o no, productos</div>
