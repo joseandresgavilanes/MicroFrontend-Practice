@@ -67,6 +67,12 @@ const SelectCategory = (props: RemoteTaskProps) => {
     setSelectedCategory(event.target.value);
   };
 
+  const categoryCatalogue = [
+    { label: "Seleccione...", value: "" },
+    { label: "Tecnología", value: "tecnologia" },
+    { label: "Vestimenta", value: "vestimenta" },
+    { label: "Medicamento", value: "medicamento" },
+  ];
   const onBeforeFinishingHandler = ({ comment }: any) => {
     if (selectedCategory === "") {
       notificationOptions(
@@ -87,6 +93,13 @@ const SelectCategory = (props: RemoteTaskProps) => {
       ],
       comment,
     });
+    notificationOptions(
+      "successs",
+      "Finalización de tarea",
+      "Selección de categoria, realizada",
+      3000,
+      toast
+    );
   };
 
   useEffect(() => {
@@ -110,15 +123,23 @@ const SelectCategory = (props: RemoteTaskProps) => {
           onChange={(e) => handleCategoryChange(e)}
           style={styles.input}
         >
-          <option value="">Seleccione...</option>
+          {categoryCatalogue.map((category, index) => {
+            return (
+              <option key={index + "-" + category.value} value={category.value}>
+                category.label
+              </option>
+            );
+          })}
+          {/* <option value="">Seleccione...</option>
           <option value="tecnologia">Tecnología</option>
           <option value="vestimenta">Vestimenta</option>
-          <option value="medicamento">Medicamento</option>
+          <option value="medicamento">Medicamento</option> */}
         </select>
       </label>
       {selectedCategory !== "" ? (
         <div style={styles.successMessage}>
-          Se ha seleccionado la categoría: {selectedCategory}
+          Se ha seleccionado la categoría:{" "}
+          {categoryCatalogue.find((c) => c.value === selectedCategory)?.label}
         </div>
       ) : (
         <div style={styles.error}>Debe seleccionar una categoría</div>

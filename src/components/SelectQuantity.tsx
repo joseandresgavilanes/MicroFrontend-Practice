@@ -87,6 +87,13 @@ const SelectQuantity = (props: RemoteTaskProps) => {
       ],
       comment,
     });
+    notificationOptions(
+      "successs",
+      "Finalización de tarea",
+      "Selección de cantidad, realizada",
+      3000,
+      toast
+    );
   };
 
   useEffect(() => {
