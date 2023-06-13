@@ -2,6 +2,8 @@ import React, { useEffect, useState, ChangeEvent, useRef } from "react";
 import { RemoteTaskProps } from "@ka-react/micro-frontend";
 import { notificationOptions } from "@/utils";
 import { Toast } from "primereact/toast";
+import { useNotification } from "@ka-react/message";
+import { useForm } from "react-hook-form";
 
 const styles = {
   formContainer: {
@@ -60,10 +62,19 @@ const styles = {
 };
 
 const AskProduct = (props: RemoteTaskProps) => {
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { haveProducts: undefined },
+  });
   const [haveProducts, setHaveProducts] = useState<boolean | undefined>(
     undefined
   );
   const toast = useRef(null);
+  // const { notification } = useNotification();
 
   const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
     setHaveProducts(event.target.value === "yes");
@@ -71,6 +82,7 @@ const AskProduct = (props: RemoteTaskProps) => {
 
   const onBeforeFinishingHandler = ({ comment }: any) => {
     if (haveProducts === undefined) {
+      // notification.error();
       notificationOptions(
         "error",
         "Finalización de tarea",
@@ -92,7 +104,7 @@ const AskProduct = (props: RemoteTaskProps) => {
     notificationOptions(
       "successs",
       "Finalización de tarea",
-      "Indicación de existencia de producto, realizada",
+      "Selección realizada",
       3000,
       toast
     );
@@ -109,34 +121,56 @@ const AskProduct = (props: RemoteTaskProps) => {
 
   return (
     <div style={styles.formContainer}>
-      <Toast ref={toast} />
-      <div style={styles.subheading}>Selecciona si existen productos: *</div>
-      <label style={styles.label}>
-        <input
-          type="radio"
-          name="haveProducts"
-          value="yes"
-          checked={haveProducts === true}
-          onChange={handleOptionChange}
-        />
-        Sí
-      </label>
-      <label style={styles.label}>
-        <input
-          type="radio"
-          name="haveProducts"
-          value="no"
-          checked={haveProducts === false}
-          onChange={handleOptionChange}
-        />
-        No
-      </label>
-      {haveProducts !== undefined &&
-      (haveProducts || haveProducts === false) ? (
-        <div style={styles.successMessage}>Existen productos para entregar</div>
-      ) : (
-        <div style={styles.error}>Debe indicar si existen, o no, productos</div>
-      )}
+      <form action="">
+        <Toast ref={toast} />
+        <div style={styles.subheading}>Selecciona si existen productos: *</div>
+        <label style={styles.label}>
+          <input
+            type="radio"
+            name="haveProducts"
+            value="yes"
+            checked={haveProducts === true}
+            // {...register("haveProducts")}
+            onChange={handleOptionChange}
+          />
+          Sí
+        </label>
+        <label style={styles.label}>
+          <input
+            type="radio"
+            name="haveProducts"
+            value="no"
+            checked={haveProducts === false}
+            // {...register("haveProducts")}
+            onChange={handleOptionChange}
+          />
+          No
+        </label>
+        {haveProducts !== undefined &&
+        (haveProducts || haveProducts === false) ? (
+          <div style={styles.successMessage}>
+            {!haveProducts ? "No existen" : "Existen"} productos para entregar
+          </div>
+        ) : (
+          <div style={styles.error}>
+            Debe indicar si existen, o no, productos
+          </div>
+        )}
+
+        {/* {getValues("haveProducts") ? (
+          <div style={styles.successMessage}>
+            {getValues("haveProducts") === "no" ? "No existen" : "Existen"}{" "}
+            productos para entregar
+          </div>
+        ) : (
+          <></>
+        )}
+        {errors.haveProducts && (
+          <span style={styles.error}>
+            Debe indicar si existen, o no, productos
+          </span>
+        )} */}
+      </form>
     </div>
   );
 };
