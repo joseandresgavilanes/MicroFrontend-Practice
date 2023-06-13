@@ -126,7 +126,7 @@ const SelectCategory = (props: RemoteTaskProps) => {
           {categoryCatalogue.map((category, index) => {
             return (
               <option key={index + "-" + category.value} value={category.value}>
-                category.label
+                {category.label}
               </option>
             );
           })}
