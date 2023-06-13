@@ -11,7 +11,7 @@ npm run dev
 Build docker image
 
 ```shell
-docker build --add-host nexusdev.krugercorp.com:192.168.5.17 --no-cache -t krugerarchitecturedocker.krugercorp.com/kw-legacy-web:1.0.0-SNAPSHOT -f deploy/docker/Dockerfile .
+docker build --add-host nexusdev.krugercorp.com:192.168.5.17 -t krugerarchitecturedocker.krugercorp.com/kw-legacy-web:1.0.0-SNAPSHOT -f deploy/docker/Dockerfile .
 ```
 
 **OPTIONAL** - Run the container
