@@ -96,7 +96,7 @@ const SelectCategory = (props: RemoteTaskProps) => {
     notificationOptions(
       "successs",
       "Finalización de tarea",
-      "Selección de categoria, realizada",
+      "Categoría seleccionada",
       3000,
       toast
     );

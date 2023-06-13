@@ -72,7 +72,7 @@ const SelectQuantity = (props: RemoteTaskProps) => {
       notificationOptions(
         "error",
         "Finalización de tarea",
-        "Debe seleccionar una categoria",
+        "Debe seleccionar una cantidad",
         3000,
         toast
       );
@@ -90,7 +90,7 @@ const SelectQuantity = (props: RemoteTaskProps) => {
     notificationOptions(
       "successs",
       "Finalización de tarea",
-      "Selección de cantidad, realizada",
+      "Cantidad seleccionada",
       3000,
       toast
     );
@@ -129,7 +129,7 @@ const SelectQuantity = (props: RemoteTaskProps) => {
         <div style={styles.successMessage}>
           Se ha seleccionado la cantidad: {selectedQuantity}
         </div>
-      ): (
+      ) : (
         <div style={styles.error}>Debe seleccionar una cantidad</div>
       )}
     </div>
